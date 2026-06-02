@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="action-btn" style="padding: 2px 8px; font-size: 10px; opacity: ${index === 0 ? '0.3' : '1'}" onclick="moveGame('${g.id}', -1)" ${index === 0 ? 'disabled' : ''} title="Đẩy lên">▲</button>
                     <button class="action-btn" style="padding: 2px 8px; font-size: 10px; margin-right: 5px; opacity: ${index === games.length - 1 ? '0.3' : '1'}" onclick="moveGame('${g.id}', 1)" ${index === games.length - 1 ? 'disabled' : ''} title="Kéo xuống">▼</button>
                     <button class="action-btn" onclick="editGame('${g.id}')">Sửa</button> 
-                    <button class="action-btn" style="color: var(--danger);" onclick="deleteGame('${g.id}')">Xóa</button>
+                    <button onclick="deleteGame('${g.id}')" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease; vertical-align: middle;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'" title="Xóa game"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
                 </td>
             </tr>
         `).join('');
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="Đã hủy" ${o.status==='Đã hủy'?'selected':''}>Đã hủy</option>
                     </select>
                 </td>
-                <td><button class="action-btn" style="color: var(--danger);" onclick="deleteOrder('${o.id}')">Xóa</button></td>
+                <td><button onclick="deleteOrder('${o.id}')" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease; vertical-align: middle;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'" title="Xóa đơn hàng"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></td>
             </tr>
         `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 20px;">Chưa có đơn hàng nào</td></tr>';
     };
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><span style="color: #ffffff; font-weight: bold;">${u.status}</span></td>
                 <td>
                     <button class="action-btn" onclick="toggleUserStatus(${u.id})">${u.status==='Khóa'?'Mở khóa':'Khóa'}</button>
-                    <button class="action-btn" style="color: var(--danger);" onclick="deleteUser(${u.id})">Xóa</button>
+                    <button onclick="deleteUser(${u.id})" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease; vertical-align: middle;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'" title="Xóa người dùng"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
                 </td>
             </tr>
         `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 20px;">Chưa có người dùng</td></tr>';

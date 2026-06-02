@@ -1,5 +1,5 @@
 
-// Khởi tạo và đồng bộ kho dữ liệu game thông minh
+// Khởi tạo và đồng bộ kho dữ liệu game 
 let localGames = JSON.parse(localStorage.getItem('ns_games_db'));
 let deletedIds = JSON.parse(localStorage.getItem('ns_deleted_games') || '[]');
 
@@ -10,26 +10,31 @@ if (!localGames) {
     if (window.NS_GAMES) {
         const newGames = window.NS_GAMES.filter(g => !localGames.some(lg => lg.id == g.id) && !deletedIds.includes(g.id));
         if (newGames.length > 0) {
-            localGames = [...newGames, ...localGames]; // Đưa game mới từ file JS lên đầu danh sách
+            localGames = [...newGames, ...localGames]; 
             localStorage.setItem('ns_games_db', JSON.stringify(localGames));
         }
     }
     window.NS_GAMES = localGames;
 }
 
-const money=n=>Number(n||0).toLocaleString('vi-VN')+'đ';
-const cart=()=>JSON.parse(localStorage.getItem('ns_cart')||'[]');
-const saveCart=c=>{localStorage.setItem('ns_cart',JSON.stringify(c)); updateCartBadge();};
+const money = n => Number(n || 0).toLocaleString('vi-VN') + 'đ';
+
+const cart = () => JSON.parse(localStorage.getItem('ns_cart') || '[]');
+
+const saveCart = c => {
+    localStorage.setItem('ns_cart', JSON.stringify(c)); 
+    updateCartBadge();
+};
 
 function showToast(m) {
     let b = document.getElementById('toast-box');
     if (!b) { b = document.createElement('div'); b.id = 'toast-box'; document.body.appendChild(b); }
     
-    // Luôn áp dụng định dạng vị trí góc trên bên phải dù thẻ đã có sẵn hay chưa
+    // Luôn áp dụng định dạng vị trí góc trên bên phải 
     Object.assign(b.style, { position: 'fixed', top: '100px', right: '20px', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' });
     
     const t = document.createElement('div');
-    // Thêm icon tick (V) bên cạnh lời thông báo cho chuyên nghiệp
+
     t.innerHTML = `<div style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>${m}</div>`;
     Object.assign(t.style, { background: 'linear-gradient(135deg, var(--blue), #0755dc)', color: '#fff', padding: '14px 24px', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,.3)', opacity: 0, transform: 'translateX(100%)', transition: 'all .4s cubic-bezier(0.68, -0.55, 0.265, 1.55)', fontWeight: '600', minWidth: '250px' });
     b.appendChild(t);
@@ -123,9 +128,28 @@ window.toggleFavorite = function(gameId, btnElement) {
     if (typeof renderFavorites === 'function') renderFavorites();
 };
 
-function addToCart(id,qty=1){const g=(window.NS_GAMES||[]).find(x=>x.id==id); if(!g)return; const c=cart(); const item=c.find(x=>x.id==id); item?item.qty+=qty:c.push({id:g.id,title:g.title,price:g.price,image:g.image,qty}); saveCart(c); showToast('Đã thêm vào giỏ hàng!');}
-function updateCartBadge(){const el=document.querySelector('#cartCount'); if(el) el.textContent=cart().reduce((s,i)=>s+i.qty,0);}
-function renderStars(n){return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n)}
+function addToCart(id, qty = 1) {
+    const g = (window.NS_GAMES || []).find(x => x.id == id); 
+    if (!g) return; 
+    const c = cart(); 
+    const item = c.find(x => x.id == id); 
+    if (item) {
+        item.qty += qty;
+    } else {
+        c.push({ id: g.id, title: g.title, price: g.price, image: g.image, qty });
+    }
+    saveCart(c); 
+    showToast('Đã thêm vào giỏ hàng!');
+}
+
+function updateCartBadge() {
+    const el = document.querySelector('#cartCount'); 
+    if (el) el.textContent = cart().reduce((s, i) => s + i.qty, 0);
+}
+
+function renderStars(n) {
+    return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+}
 function renderGameCard(g, showRemoveBtn = false) {
     // Ngăn chặn lỗi hiển thị thùng rác do hàm map() tự động truyền index vào
     if (typeof showRemoveBtn !== 'boolean') showRemoveBtn = false;
@@ -270,8 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="category-dropdown">
                 <a href="javascript:void(0)" style="display: flex; align-items: center; gap: 4px;">HƯỚNG DẪN <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
                 <div class="dropdown-content" style="right: auto; left: 0; top: 30px; min-width: 160px; z-index: 1000;">
+                    <a href="about.html"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Về chúng tôi</a>
                     <a href="products.html"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>Mua hàng</a>
-                    <a href="javascript:void(0)"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>Trả hàng</a>
+                    <a href="return.html"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>Trả hàng</a>
                 </div>
             </div>
             <a href="javascript:void(0)">NEWS</a>

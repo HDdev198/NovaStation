@@ -152,6 +152,23 @@ img {
     justify-content: center;
 }
 
+/* Hiệu ứng loading dùng chung */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.loading-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 0.8s ease-in-out infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
 /* Search Suggestions */
 .search-suggestions {
     position: absolute;
@@ -334,7 +351,7 @@ img {
     display: inline-block;
 }
 
-/* Cầu nối vô hình giúp chuột không bị rớt khi di chuyển từ chữ THỂ LOẠI xuống danh sách */
+
 .category-dropdown::after {
     content: "";
     position: absolute;
@@ -356,7 +373,7 @@ img {
 .hero-card {
     min-height: 410px;
     border: 1px solid var(--line);
-    border-radius: 24px;
+    border-radius: 5px;
     background: linear-gradient(90deg, rgba(4, 12, 26, .95), rgba(4, 12, 26, .55)), url('../images/banner.jpg') center/cover;
     box-shadow: var(--shadow);
     display: grid;
@@ -366,21 +383,21 @@ img {
 }
 
 .hero-card p.muted {
-    margin-bottom: 12px; /* Tạo khoảng cách xuống tiêu đề H1 */
-    letter-spacing: 2px; /* Làm dòng chữ nhỏ trông thanh thoát hơn */
+    margin-bottom: 12px; 
+    letter-spacing: 2px; 
     font-weight: 600;
 }
 
 .hero h1 {
     font-size: 54px;
     line-height: 1.02;
-    margin: 0 0 35px; /* Tăng khoảng cách từ tiêu đề xuống nút bấm */
+    margin: 0 0 35px; 
 }
 
 .hero-slider {
     position: relative;
     overflow: hidden;
-    border-radius: 24px;
+    border-radius: 5px;
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
 }
@@ -483,7 +500,7 @@ img {
 
 .game-card .info {
     height: 86.9px;
-    padding: 8px 10px; /* Thu hẹp khoảng trống để thông tin gọn hơn */
+    padding: 8px 10px; 
     display: flex;
     flex-direction: column;
 }
@@ -499,7 +516,6 @@ img {
     font-size: 13px
 }
 
-/* Ép kích thước giá gốc nhỏ hơn một chút, chỉ riêng trong danh sách game để không bị khuất số */
 #productList .old {
     font-size: 8.5px !important;
 }
@@ -580,6 +596,13 @@ img {
     display: grid;
     grid-template-columns: 260px 1fr;
     gap: 24px
+}
+
+/* Bo viền 5px cho các khung ở trang Danh sách game */
+.layout .sidebar,
+.layout .input,
+.layout select {
+    border-radius: 5px !important;
 }
 
 .sidebar {
@@ -675,6 +698,13 @@ textarea {
     display: grid;
     grid-template-columns: 1.4fr .8fr;
     gap: 26px
+}
+
+/* Bo góc 5px cho các khung trong Giỏ hàng và Thanh toán */
+.checkout-grid .card,
+.checkout-grid .summary-box,
+.checkout-grid .input {
+    border-radius: 5px !important;
 }
 
 .form-grid {
