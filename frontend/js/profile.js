@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Thêm nút vào trang Admin nếu tài khoản có quyền Admin
     if (u.role === 'Admin') {
         const logoutBtn = document.querySelector('#logoutBtn');
-        if (logoutBtn) logoutBtn.insertAdjacentHTML('beforebegin', '<a class="btn" href="admin.html">Trang quản lý</a>');
+        if (logoutBtn) logoutBtn.insertAdjacentHTML('beforebegin', '<a class="btn" href="admin.html">Trang quản trị</a>');
     }
 
     // Hiển thị ảnh đại diện nếu người dùng đã từng upload

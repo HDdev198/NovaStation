@@ -41,7 +41,18 @@
             <div class="card summary-box admin-section active" id="section-games">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2 style="color: #ffffff;">Danh sách Trò chơi</h2>
-                    <button class="btn" id="addGameBtn">+ Thêm Game Mới</button>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button id="exportDataBtn" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" onmouseover="this.style.color='#ffffff'; this.style.filter='drop-shadow(0 0 8px rgba(255,255,255,0.5))'" onmouseout="this.style.color='var(--muted)'; this.style.filter='none'" title="Xuất dữ liệu Zip (Tải file games.js)">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
+                        <button class="btn" id="addGameBtn" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Thêm
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Bảng hiển thị dữ liệu -->
@@ -115,19 +126,19 @@
                     <h2>Thống kê doanh thu</h2>
                 </div>
                 <div class="form-grid" style="margin-bottom: 20px;">
-                    <div style="background: var(--panel2); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid var(--line);">
+                    <div style="background: var(--panel2); padding: 20px; border-radius: 5px; text-align: center; border: 1px solid var(--line);">
                         <h3 style="color: var(--muted); margin-bottom: 10px;">Tổng Doanh Thu</h3>
                         <h2 style="color: #ffffff; font-size: 28px;" id="statTotalRev">0đ</h2>
                     </div>
-                    <div style="background: var(--panel2); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid var(--line);">
+                    <div style="background: var(--panel2); padding: 20px; border-radius: 5px; text-align: center; border: 1px solid var(--line);">
                         <h3 style="color: var(--muted); margin-bottom: 10px;">Tổng Đơn Hàng</h3>
                         <h2 style="color: #ffffff; font-size: 28px;" id="statTotalOrders">0</h2>
                     </div>
-                    <div style="background: var(--panel2); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid var(--line);">
+                    <div style="background: var(--panel2); padding: 20px; border-radius: 5px; text-align: center; border: 1px solid var(--line);">
                         <h3 style="color: var(--muted); margin-bottom: 10px;">Game Đã Bán</h3>
                         <h2 style="color: #ffffff; font-size: 28px;" id="statTotalGames">0</h2>
                     </div>
-                    <div style="background: var(--panel2); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid var(--line);">
+                    <div style="background: var(--panel2); padding: 20px; border-radius: 5px; text-align: center; border: 1px solid var(--line);">
                         <h3 style="color: var(--muted); margin-bottom: 10px;">Khách Hàng</h3>
                         <h2 style="color: #ffffff; font-size: 28px;" id="statTotalUsers">0</h2>
                     </div>
