@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaStation - PS5 Game Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="container nav"><a class="brand" href="index.html"><img src="images/logo.png"
+                    alt="NovaStation logo"></a>
+            <span class="brand-slogan">GAME BẢN QUYỀN CHÍNH HÃNG.</span>
+            <div class="search"><input id="globalSearch" placeholder="Nhập từ khóa tìm kiếm..."><button><img src="images/icons/search2.png" alt="Search" style="width: 18px; height: 18px; object-fit: contain; opacity: 0.8;"></button></div>
+            <div class="nav-actions"><a href="cart.html" class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span id="cartCount" class="badge">0</span></a><div class="user-dropdown">
+                        <a href="javascript:void(0)" class="user-btn" onclick="toggleUserDropdown(event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </a>
+                        <div class="dropdown-content" id="userDropdownContent">
+                            <a href="login.html">Đăng nhập / Đăng ký</a>
+                            <a href="profile.html">Hồ sơ</a>
+                            <a href="orders.html">Đơn hàng</a>
+                            <a href="javascript:void(0)" onclick="logoutUser()">Đăng xuất</a>
+                        </div>
+                    </div></div>
+        </div>
+        <nav class="nav-links">
+            <div class="container">
+                <a href="index.html">TRANG CHỦ</a>
+                <a href="products.html">GAME HOT</a>
+                <a href="products.html?cat=sale">ƯU ĐÃI</a>
+                <div class="category-dropdown">
+                    <a href="javascript:void(0)" style="display: flex; align-items: center; gap: 4px;">THỂ LOẠI <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                    <div class="dropdown-content" style="right: auto; left: 0; top: 30px; min-width: 160px; z-index: 1000;">
+                        <a href="products.html?cat=Hành động">Hành động</a>
+                        <a href="products.html?cat=Phiêu lưu">Phiêu lưu</a>
+                        <a href="products.html?cat=RPG">RPG</a>
+                        <a href="products.html?cat=Thể thao">Thể thao</a>
+                        <a href="products.html?cat=Đua xe">Đua xe</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="container hero-slider">
+                <div class="slider-wrapper" id="heroSlider">
+                    <div class="slide hero-card" style="background: linear-gradient(90deg, rgba(4, 12, 26, .95), rgba(4, 12, 26, .55)), url('images/banners/playstation-5-pro-.jpeg') center/cover !important;">
+                        <div>
+                            <p class="muted">GAMES STORE</p>
+                            <h1>PLAY ON PLAY-STATION 5</h1>
+                            <a class="btn" href="products.html">Mua ngay</a>
+                        </div>
+                    </div>
+                    <div class="slide hero-card" style="background: linear-gradient(90deg, rgba(4, 12, 26, .95), rgba(4, 12, 26, .55)), url('images/banners/spider3.jpg') center/cover !important;">
+                        <div>
+                            <p class="muted">SIÊU PHẨM HÀNH ĐỘNG</p>
+                            <h1>MARVEL'S SPIDER-MAN 2</h1>
+                            <a class="btn" href="product-detail.html?id=1">Khám phá ngay</a>
+                        </div>
+                    </div>
+                    <div class="slide hero-card" style="background: linear-gradient(90deg, rgba(4, 12, 26, .95), rgba(4, 12, 26, .55)), url('images/banners/thumb2.jpg') center/cover !important;">
+                        <div>
+                            <p class="muted">HUYỀN THOẠI BẮC ÂU</p>
+                            <h1>GOD OF WAR RAGNARÖK</h1>
+                            <a class="btn" href="product-detail.html?id=2">Mua ngay</a>
+                        </div>
+                    </div>
+                    <div class="slide hero-card" style="background: linear-gradient(90deg, rgba(4, 12, 26, .95), rgba(4, 12, 26, .55)), url('images/banners/grand2.jpg') center/cover !important;">
+                        <div>
+                            <p class="muted">PHIÊU LƯU THẾ GIỚI MỞ</p>
+                            <h1>GRAND THEFT AUTO VI</h1>
+                            <a class="btn" href="product-detail.html?id=5">Đặt trước ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-arrow prev" onclick="moveSlide(-1)">
+                    <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button class="slider-arrow next" onclick="moveSlide(1)">
+                    <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <div class="slider-nav">
+                    <button class="slider-dot active" onclick="setSlide(0)"></button>
+                    <button class="slider-dot" onclick="setSlide(1)"></button>
+                    <button class="slider-dot" onclick="setSlide(2)"></button>
+                    <button class="slider-dot" onclick="setSlide(3)"></button>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Game nổi bật</h2><a href="products.html">Xem tất cả</a>
+                </div>
+                <div id="featured" class="grid game-grid"></div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Game chính hãng</h2><a href="products.html">Xem tất cả</a>
+                </div>
+                <div id="officialGames" class="grid game-grid"></div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container grid banner-row">
+                <div class="promo"
+                    style="background-image:linear-gradient(90deg,#061426,transparent),url('images/banners/uu1.jpeg')">
+                    <div>
+                        <h2>Ưu đãi đặc biệt</h2>
+                        <p>Giảm giá lên đến 30%</p><a class="btn" href="products.html">Xem ngay</a>
+                    </div>
+                </div>
+                <div class="promo"
+                    style="background-image:linear-gradient(90deg,#061426,transparent),url('images/banners/uu3.jpg')">
+                    <div>
+                        <h2>PS5 Exclusive</h2>
+                        <p>Các tựa game độc quyền hấp dẫn</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <img src="images/logo2.png" alt="NovaStation" class="footer-logo">
+                <p>Cửa hàng game PS5 trực tuyến uy tín, cung cấp game chính hãng, giá tốt và hỗ trợ tận tâm. Đồng hành cùng game thủ trên hành trình chinh phục những trải nghiệm giải trí đỉnh cao trên PlayStation 5</p>
+            </div>
+            <div>
+                <h4>Danh mục</h4>
+                <p><a href="products.html">Hành động</a><br><a href="products.html">Phiêu lưu</a><br><a href="products.html">Thể thao</a><br><a href="products.html">RPG</a></p>
+            </div>
+            <div>
+                <h4>Hỗ trợ</h4>
+                <p><a href="checkout.html">Thanh toán</a><br><a href="#">Bảo hành</a><br><a href="#">Liên hệ</a></p>
+            </div>
+            <div>
+                <h4>Liên hệ</h4>
+                <p>Email: novastation@gmail.com<br>Hotline: +84 023456789<br>Địa chỉ: Hà Nội, Việt Nam</p>
+            </div>
+        </div>
+    </footer>
+    <script src="data/games.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentSlide = 0; const totalSlides = 4;
+        const wrapper = document.getElementById('heroSlider');
+        const dots = document.querySelectorAll('.slider-dot');
+        function updateSlider() {
+            wrapper.style.transform = `translateX(-${currentSlide * 25}%)`;
+            dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
+        }
+        function moveSlide(dir) { currentSlide = (currentSlide + dir + totalSlides) % totalSlides; updateSlider(); }
+        function setSlide(idx) { currentSlide = idx; updateSlider(); }
+        setInterval(() => moveSlide(1), 5000);
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('featured').innerHTML = NS_GAMES.slice(0, 5).map(renderGameCard).join('');
+            document.getElementById('officialGames').innerHTML = NS_GAMES.slice(5, 10).map(renderGameCard).join('');
+        });
+    </script>
+</body>
+
+</html>

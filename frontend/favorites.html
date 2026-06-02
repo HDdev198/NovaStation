@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Yêu Thích - NovaStation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-title h1 {
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .fav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+        }
+        @media(max-width:900px) {
+            .fav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .empty-fav {
+            text-align: center;
+            padding: 50px 0;
+            color: var(--muted);
+            grid-column: 1 / -1;
+            background: #000000;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav"><a class="brand" href="index.html"><img src="images/logo.png" alt="NovaStation logo"></a>
+            <span class="brand-slogan">GAME BẢN QUYỀN CHÍNH HÃNG.</span>
+            <div class="search"><input id="globalSearch" placeholder="Nhập từ khóa tìm kiếm..."><button><img src="images/icons/lup1.png" alt="Search" style="width: 18px; height: 18px; object-fit: contain; opacity: 0.7;"></button></div>
+            <div class="nav-actions"><a href="cart.html" class="cart-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span id="cartCount" class="badge">0</span></a><div class="user-dropdown">
+                        <a href="javascript:void(0)" class="user-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </a>
+                        <div class="dropdown-content"></div>
+                    </div></div>
+        </div>
+        <nav class="nav-links">
+            <div class="container"></div>
+        </nav>
+    </header>
+    
+    <main class="container" style="margin-bottom: 50px;">
+        <div class="page-title" style="border-bottom: 1px solid var(--line); margin-bottom: 20px; padding-bottom: 15px;">
+            <h1>GAME YÊU THÍCH</h1>
+            <p class="muted">Danh sách yêu thích của bạn</p>
+        </div>
+        <div id="favoritesList" class="fav-grid">
+            <!-- Game yêu thích sẽ hiện ở đây -->
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <img src="images/logo2.png" alt="NovaStation" class="footer-logo">
+                <p>Cửa hàng game PS5 trực tuyến uy tín, cung cấp game chính hãng, giá tốt và hỗ trợ tận tâm. Đồng hành cùng game thủ trên hành trình chinh phục những trải nghiệm giải trí đỉnh cao trên PlayStation 5</p>
+            </div>
+            <div>
+                <h4>Danh mục</h4>
+                <p><a href="products.html">Hành động</a><br><a href="products.html">Phiêu lưu</a><br><a href="products.html">Thể thao</a><br><a href="products.html">RPG</a></p>
+            </div>
+            <div>
+                <h4>Hỗ trợ</h4>
+                <p><a href="checkout.html">Thanh toán</a><br><a href="#">Bảo hành</a><br><a href="#">Liên hệ</a></p>
+            </div>
+            <div>
+                <h4>Liên hệ</h4>
+                <p>Email: novastation@gmail.com<br>Hotline: +84 023456789<br>Địa chỉ: Hà Nội, Việt Nam</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data/games.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.renderFavorites = function() {
+                const favs = JSON.parse(localStorage.getItem('ns_favorites') || '[]');
+                const list = document.getElementById('favoritesList');
+                if (!list) return;
+                if (favs.length === 0) {
+                    list.innerHTML = '<div class="empty-fav"><svg viewBox="0 0 24 24" width="64" height="64" stroke="var(--line)" stroke-width="2" fill="none" style="margin-bottom: 15px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><h3>Bạn chưa có game yêu thích nào!</h3><a href="products.html" class="btn" style="display: inline-block; margin-top: 15px;">Khám phá ngay</a></div>';
+                    return;
+                }
+                const favGames = (window.NS_GAMES || []).filter(g => favs.findIndex(id => id == g.id) > -1);
+                list.innerHTML = favGames.map(g => renderGameCard(g, true)).join('');
+            };
+            renderFavorites();
+        });
+    </script>
+</body>
+</html>
