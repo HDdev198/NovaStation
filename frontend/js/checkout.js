@@ -77,22 +77,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(() => {
-            // Lấy tên và mail thực tế trong form lúc đặt (phòng khi khách hàng sửa lại)
-            const nameVal = document.getElementById('chkName') ? document.getElementById('chkName').value : (u.name || 'Khách vãng lai');
-            const emailVal = document.getElementById('chkEmail') ? document.getElementById('chkEmail').value : (u.email || '');
-            const currentTotal = currentCart.reduce((s, i) => s + i.price * i.qty, 0);
+                // Lấy tên và mail thực tế trong form lúc đặt
+        const nameVal = document.getElementById('chkName')
+            ? document.getElementById('chkName').value.trim()
+            : (u.name || 'Khách vãng lai');
 
-            const orders = JSON.parse(localStorage.getItem('novastation_orders') || '[]');
-            orders.unshift({
-                id: '#NS' + Date.now().toString().slice(-6),
-                date: new Date().toLocaleDateString('vi-VN'),
-                total: currentTotal, status: 'Đã thanh toán', customerName: nameVal, customerEmail: emailVal
-            });
-            
-            localStorage.setItem('novastation_orders', JSON.stringify(orders));
-            saveCart([]); // Làm trống giỏ hàng
-            if (typeof showToast === 'function') showToast('Thanh toán thành công!');
-            setTimeout(() => location.href = 'orders.html', 800);
-        }, 1200);
+        const emailVal = document.getElementById('chkEmail')
+            ? document.getElementById('chkEmail').value.trim()
+            : (u.email || '');
+
+        const phoneVal = document.getElementById('chkPhone')
+            ? document.getElementById('chkPhone').value.trim()
+            : (u.phone || '');
+
+        const addressVal = document.getElementById('chkAddress')
+            ? document.getElementById('chkAddress').value.trim()
+            : '';
+
+        const currentTotal = currentCart.reduce((s, i) => s + i.price * i.qty, 0);
+
+        // QUAN TRỌNG: Lưu lại danh sách sản phẩm trong đơn hàng
+        const orderItems = currentCart.map(i => ({
+            id: i.id,
+            title: i.title,
+            price: i.price,
+            image: i.image,
+            qty: i.qty
+        }));
+
+        const orders = JSON.parse(localStorage.getItem('novastation_orders') || '[]');
+
+        orders.unshift({
+            id: '#NS' + Date.now().toString().slice(-6),
+            date: new Date().toLocaleDateString('vi-VN'),
+            total: currentTotal,
+            status: 'Đã thanh toán',
+            customerName: nameVal,
+            customerEmail: emailVal,
+            customerPhone: phoneVal,
+            address: addressVal,
+
+            // Thêm dòng này thì xem chi tiết mới hiện đúng sản phẩm
+            items: orderItems
+        });
+
+        localStorage.setItem('novastation_orders', JSON.stringify(orders));
+
+        saveCart([]); // Làm trống giỏ hàng
+
+        if (typeof showToast === 'function') showToast('Thanh toán thành công!');
+
+        setTimeout(() => location.href = 'orders.html', 800);
+    }, 1200);
     });
 });
