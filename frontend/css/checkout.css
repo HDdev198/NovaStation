@@ -1,1 +1,327 @@
-/* checkout.css - tuỳ chỉnh riêng trang checkout; style chính nằm trong style.css */
+/* ============================================================
+   CHECKOUT PAGE - NovaStation
+   ============================================================ */
+
+/* --- SECTION TITLE --- */
+.chk-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(255,255,255,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+/* --- FORM GRID --- */
+.chk-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.chk-field { display: flex; flex-direction: column; gap: 6px; }
+.chk-span2 { grid-column: 1 / -1; }
+.chk-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.chk-required { color: #ff4d6d; margin-left: 2px; }
+
+/* Select styling */
+.chk-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+}
+.chk-select:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* --- PAYMENT METHOD CARDS --- */
+.chk-pay-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+.chk-pay-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 8px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+}
+.chk-pay-card small { font-size: 10px; color: rgba(255,255,255,0.35); }
+.chk-pay-card:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+.chk-pay-card.active {
+    border-color: var(--blue, #1a6ef7);
+    background: rgba(26,110,247,0.12);
+    color: #fff;
+}
+.chk-pay-card.active small { color: rgba(255,255,255,0.6); }
+.chk-pay-radio { display: none; }
+
+/* --- COUPON ROW --- */
+.chk-coupon-row {
+    display: flex;
+    gap: 10px;
+}
+.chk-coupon-row .input { flex: 1; }
+.chk-coupon-btn {
+    padding: 0 18px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+.chk-coupon-btn:hover { background: rgba(255,255,255,0.15); }
+
+/* --- ASIDE (ORDER SUMMARY) --- */
+.chk-aside { display: flex; flex-direction: column; gap: 0; }
+.chk-divider { border: none; border-top: 1px dashed rgba(255,255,255,0.1); margin: 16px 0; }
+.chk-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 8px;
+}
+
+/* --- SUBMIT BUTTON --- */
+.chk-submit-btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px;
+    background: linear-gradient(135deg, #e60029, #c20022);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 8px 28px rgba(230,0,41,0.35);
+    transition: all 0.25s;
+    letter-spacing: 0.3px;
+}
+.chk-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(230,0,41,0.45); }
+.chk-submit-btn:active { transform: translateY(0); }
+
+/* Secure note */
+.chk-secure-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 12px;
+    margin-bottom: 0;
+}
+
+/* --- BILL OVERLAY --- */
+#billOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    animation: billFadeIn 0.3s ease;
+}
+@keyframes billFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.bill-card {
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    width: min(560px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    animation: billSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes billSlideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.bill-header {
+    background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+    color: #fff;
+    padding: 24px 28px 20px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.bill-logo { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: #fff; }
+.bill-logo span { color: #e60029; }
+.bill-meta { text-align: right; font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.bill-meta strong { color: #fff; font-size: 14px; display: block; }
+
+.bill-body { padding: 24px 28px; }
+
+.bill-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(0,0,0,0.35);
+    margin-bottom: 10px;
+    margin-top: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 6px;
+}
+.bill-section-label:first-child { margin-top: 0; }
+
+.bill-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    font-size: 13px;
+    color: #222;
+}
+.bill-info-grid span { color: rgba(0,0,0,0.45); display: block; font-size: 11px; }
+.bill-info-full { grid-column: 1/-1; }
+
+/* Items table */
+.bill-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+.bill-table th {
+    background: #f5f5f5;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11px;
+    color: rgba(0,0,0,0.45);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.bill-table th:last-child, .bill-table td:last-child { text-align: right; }
+.bill-table td { padding: 10px 10px; border-bottom: 1px solid #f0f0f0; color: #222; vertical-align: middle; }
+.bill-table tr:last-child td { border-bottom: none; }
+.bill-table .bill-item-img {
+    width: 36px; height: 48px; object-fit: cover; border-radius: 4px;
+    border: 1px solid #eee; margin-right: 10px; vertical-align: middle;
+}
+
+/* Totals */
+.bill-totals { margin-top: 16px; border-top: 2px dashed #eee; padding-top: 14px; }
+.bill-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 6px;
+}
+.bill-total-row.grand {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 6px;
+}
+.bill-total-row.discount { color: #16a34a; }
+
+.bill-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 16px;
+}
+
+.bill-footer-note {
+    background: #fafafa;
+    border-top: 1px solid #eee;
+    padding: 16px 28px;
+    font-size: 12px;
+    color: rgba(0,0,0,0.4);
+    text-align: center;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Bill action buttons */
+.bill-actions {
+    display: flex;
+    gap: 10px;
+    padding: 16px 28px;
+    border-top: 1px solid #eee;
+}
+.bill-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+    border: none;
+}
+.bill-btn-print { background: #111; color: #fff; }
+.bill-btn-print:hover { background: #222; }
+.bill-btn-close { background: #f5f5f5; color: #111; }
+.bill-btn-close:hover { background: #eee; }
+.bill-btn-orders { background: #e60029; color: #fff; }
+.bill-btn-orders:hover { background: #c20022; }
+
+/* --- PRINT STYLES --- */
+@media print {
+    body > *:not(#billOverlay) { display: none !important; }
+    #billOverlay {
+        position: static !important;
+        background: none !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        animation: none !important;
+    }
+    .bill-actions, .bill-btn { display: none !important; }
+    .bill-card { box-shadow: none !important; max-height: none !important; border-radius: 0 !important; }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 640px) {
+    .chk-form-grid { grid-template-columns: 1fr; }
+    .chk-span2 { grid-column: 1; }
+    .chk-pay-grid { grid-template-columns: repeat(2, 1fr); }
+    .bill-info-grid { grid-template-columns: 1fr; }
+    .bill-actions { flex-direction: column; }
+}

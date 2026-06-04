@@ -229,6 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderOrders = () => {
         const ordersBody = document.getElementById('adminOrdersBody');
         const orders = getLocalOrders();
+
+        const statusColor = (s) => {
+            if (s.includes('hoàn') || s.includes('thanh')) return '#22c55e';
+            if (s.includes('giao')) return '#3b82f6';
+            if (s.includes('hủy')) return 'var(--danger)';
+            return '#f59e0b';
+        };
         
         ordersBody.innerHTML = orders.map(o => `
             <tr>
@@ -245,9 +252,159 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="Đã hủy" ${o.status==='Đã hủy'?'selected':''}>Đã hủy</option>
                     </select>
                 </td>
-                <td><button onclick="deleteOrder('${o.id}')" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease; vertical-align: middle;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'" title="Xóa đơn hàng"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></td>
+                <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <button onclick="adminShowOrderDetail('${o.id}')" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--muted)'" title="Xem chi tiết đơn hàng">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                        <button onclick="deleteOrder('${o.id}')" style="background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s ease; vertical-align: middle;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'" title="Xóa đơn hàng">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                    </div>
+                </td>
             </tr>
-        `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 20px;">Chưa có đơn hàng nào</td></tr>';
+        `).join('') || '<tr><td colspan="7" style="text-align:center; padding: 20px;">Chưa có đơn hàng nào</td></tr>';
+    };
+
+    // --- MODAL CHI TIẾT ĐƠN HÀNG (ADMIN) ---
+    window.adminShowOrderDetail = function(orderId) {
+        const orders = getLocalOrders();
+        const o = orders.find(x => x.id === orderId);
+        if (!o) return;
+
+        let overlay = document.getElementById('admin-order-detail-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'admin-order-detail-overlay';
+            Object.assign(overlay.style, {
+                position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 10000, opacity: 0, transition: 'opacity 0.3s'
+            });
+            overlay.addEventListener('click', e => { if (e.target === overlay) adminCloseOrderDetail(); });
+            document.body.appendChild(overlay);
+        }
+
+        const statusColor = (s) => {
+            if (s.includes('hoàn') || s.includes('thanh')) return '#22c55e';
+            if (s.includes('giao')) return '#3b82f6';
+            if (s.includes('hủy')) return 'var(--danger, #ff4d6d)';
+            return '#f59e0b';
+        };
+
+        const items = o.items && o.items.length > 0
+            ? o.items.map(i => `
+                <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+                    <img src="${i.image || ''}" alt="${i.title}" onerror="this.style.display='none'" style="width:54px;height:72px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,0.1);flex-shrink:0;">
+                    <div style="flex:1;min-width:0;">
+                        <div style="color:#fff;font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.title}</div>
+                        <div style="color:rgba(255,255,255,0.45);font-size:12px;margin-top:4px;">Số lượng: <strong style="color:rgba(255,255,255,0.75);">${i.qty}</strong></div>
+                        <div style="color:rgba(255,255,255,0.45);font-size:12px;">Đơn giá: <strong style="color:rgba(255,255,255,0.75);">${money(i.price)}</strong></div>
+                    </div>
+                    <div style="color:#fff;font-weight:700;font-size:14px;white-space:nowrap;">${money(i.price * i.qty)}</div>
+                </div>
+            `).join('')
+            : '<p style="color:rgba(255,255,255,0.35);text-align:center;font-size:13px;padding:20px 0;font-style:italic;">Không có thông tin sản phẩm trong đơn này.</p>';
+
+        overlay.innerHTML = `
+            <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:14px;width:min(580px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.7);position:relative;animation:adminSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);">
+                <style>@keyframes adminSlideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}</style>
+
+                <!-- HEADER -->
+                <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#0d1117;z-index:2;border-radius:14px 14px 0 0;">
+                    <div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <span style="color:#fff;font-weight:700;font-size:16px;">Chi tiết đơn hàng</span>
+                            <span style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;">${o.id}</span>
+                        </div>
+                        <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:5px;margin-left:28px;">Ngày đặt: ${o.date}</div>
+                    </div>
+                    <button onclick="adminCloseOrderDetail()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">&times;</button>
+                </div>
+
+                <!-- TRẠNG THÁI + ĐỔI NHANH -->
+                <div style="padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:8px;height:8px;border-radius:50%;background:${statusColor(o.status)};box-shadow:0 0 8px ${statusColor(o.status)};flex-shrink:0;"></div>
+                        <span style="color:${statusColor(o.status)};font-weight:600;font-size:13px;">${o.status}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="color:rgba(255,255,255,0.4);font-size:12px;">Đổi trạng thái:</span>
+                        <select id="adminDetailStatusSelect" style="padding:6px 10px;width:auto;font-size:12px;background:#1a1f2e;border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:6px;cursor:pointer;outline:none;" onchange="adminUpdateStatusFromDetail('${o.id}', this.value)">
+                            <option value="Chờ xử lý" ${o.status==='Chờ xử lý'?'selected':''} style="background:#1a1f2e;color:#f59e0b;">Chờ xử lý</option>
+                            <option value="Đã thanh toán" ${o.status==='Đã thanh toán'?'selected':''} style="background:#1a1f2e;color:#22c55e;">Đã thanh toán</option>
+                            <option value="Đang giao" ${o.status==='Đang giao'?'selected':''} style="background:#1a1f2e;color:#3b82f6;">Đang giao</option>
+                            <option value="Đã hoàn thành" ${o.status==='Đã hoàn thành'?'selected':''} style="background:#1a1f2e;color:#a78bfa;">Đã hoàn thành</option>
+                            <option value="Đã hủy" ${o.status==='Đã hủy'?'selected':''} style="background:#1a1f2e;color:#ff4d6d;">Đã hủy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN KHÁCH HÀNG -->
+                <div style="padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-weight:700;">Thông tin khách hàng</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        ${o.customerName ? `
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 14px;">
+                            <div style="color:rgba(255,255,255,0.35);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Tên</div>
+                            <div style="color:#fff;font-weight:600;font-size:13px;">${o.customerName}</div>
+                        </div>` : ''}
+                        ${o.customerPhone ? `
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 14px;">
+                            <div style="color:rgba(255,255,255,0.35);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Số điện thoại</div>
+                            <div style="color:#fff;font-weight:600;font-size:13px;">${o.customerPhone}</div>
+                        </div>` : ''}
+                        ${o.customerEmail ? `
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 14px;grid-column:1/-1;">
+                            <div style="color:rgba(255,255,255,0.35);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Email</div>
+                            <div style="color:#fff;font-weight:600;font-size:13px;">${o.customerEmail}</div>
+                        </div>` : ''}
+                        ${o.address ? `
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 14px;grid-column:1/-1;">
+                            <div style="color:rgba(255,255,255,0.35);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Địa chỉ giao hàng</div>
+                            <div style="color:#fff;font-weight:600;font-size:13px;">${o.address}</div>
+                        </div>` : ''}
+                    </div>
+                </div>
+
+                <!-- DANH SÁCH SẢN PHẨM -->
+                <div style="padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700;">
+                        Sản phẩm đã mua ${o.items && o.items.length > 0 ? `<span style="font-size:10px;background:rgba(255,255,255,0.07);padding:1px 7px;border-radius:20px;margin-left:6px;">${o.items.reduce((s, i) => s + i.qty, 0)} sản phẩm</span>` : ''}
+                    </div>
+                    ${items}
+                </div>
+
+                <!-- TỔNG TIỀN -->
+                <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);border-radius:0 0 14px 14px;">
+                    <span style="color:rgba(255,255,255,0.4);font-size:14px;">Tổng thanh toán</span>
+                    <span style="color:#fff;font-size:22px;font-weight:800;letter-spacing:-0.5px;">${money(o.total)}</span>
+                </div>
+            </div>
+        `;
+
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.style.opacity = 1, 10);
+    };
+
+    window.adminCloseOrderDetail = function() {
+        const overlay = document.getElementById('admin-order-detail-overlay');
+        if (!overlay) return;
+        overlay.style.opacity = 0;
+        setTimeout(() => overlay.style.display = 'none', 300);
+    };
+
+    window.adminUpdateStatusFromDetail = function(orderId, newStatus) {
+        let orders = getLocalOrders();
+        const o = orders.find(x => x.id === orderId);
+        if (o) {
+            o.status = newStatus;
+            localStorage.setItem('novastation_orders', JSON.stringify(orders));
+            if (typeof showToast === 'function') showToast('Cập nhật trạng thái thành công!');
+            renderOrders(); // Cập nhật bảng bên dưới luôn
+        }
     };
 
     window.updateOrderStatus = (id, newStatus) => {
